@@ -14,31 +14,28 @@ trait TaskResponseHandler
 {
     public static function index()
     {
-       try
-        {
+       try{
             $tasks = Task::all();
             return response()->json([
                 'data' => $tasks,
                 'message' => 'Response sent successfully'
             ],200);
-        } catch (\Exception $err) {
+        } catch(\Exception $err) {
             return response()->json([
                 'message' => $err->getMessage(),
             ], $err->getCode());
         }
     }
-
     public static function store(StoretaskRequest $request)
     {
-       try
-        {
+       try{
             $data = $request->validated();
             $task = Task::create($data) ;
             return response()->json([
                 'data' => $task,
                 'message' => 'Response sent successfully'
             ],200);
-        } catch (\Exception $err){
+        } catch(\Exception $err){
             return response()->json([
                 'message' => $err->getMessage(),
             ], $err->getCode());
@@ -47,23 +44,24 @@ trait TaskResponseHandler
 
         public function show(task $task)
     {
-        try {
-
-        } catch (\Exception $err) {
-
+        try{
+            return Task::find($task->id);
+        } catch (\Exception $err){
+            return response()->json([
+                'message' => $err->getMessage(),
+            ],$err->getCode());
         }
     }
         public static function update(UpdatetaskRequest $request, task $task)
     {
-       try
-        {
+       try{
             $data = $request->validated();
             $task = Task::update($data) ;
             return response()->json([
                 'data' => $task,
                 'message' => 'Response sent successfully'
             ],200);
-        } catch (\Exception $err){
+        } catch(\Exception $err){
             return response()->json([
                 'message' => $err->getMessage(),
             ], $err->getCode());
@@ -72,8 +70,7 @@ trait TaskResponseHandler
 
     public static function done($task)
     {
-        try
-        {
+        try{
             $task->done=='true';
             return response()->json([
                 'message' => 'Task is done',
