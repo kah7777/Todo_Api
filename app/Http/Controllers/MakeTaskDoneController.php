@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class MakeTaskDoneController extends Controller
@@ -9,10 +10,10 @@ class MakeTaskDoneController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, Task $task)
+    public function __invoke(Task $task)
     {
         try{
-            $task->done == true;
+            $task->done = true;
             return response()->json([
                 'data'=>$task,
                 'message'=>'Response sent successfully',
@@ -24,5 +25,4 @@ class MakeTaskDoneController extends Controller
         }
     }
 
-    }
 }

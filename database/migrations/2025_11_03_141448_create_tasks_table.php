@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->date('dead_line')->nullable();
             $table->time('timer')->nullable();
-            $table->boolean('done')->default(false);
+            $table->boolean('done')->default(0);
             $table->timestamps();
         });
     }

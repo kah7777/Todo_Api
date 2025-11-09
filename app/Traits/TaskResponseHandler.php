@@ -2,34 +2,31 @@
 
 namespace App\Traits;
 
-use App\Http\Controllers\TaskController;
-use App\Http\Requests\StoretaskRequest;
-use App\Http\Requests\UpdatetaskRequest;
+use App\Http\Requests\IndexTaskRequest;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Log;
-use Mockery\Expectation;
-use SebastianBergmann\Type\StaticType;
+use Termwind\Components\Raw;
 
 trait TaskResponseHandler
 {
-    public static function index()
+    public static function index(IndexTaskRequest $request)
     {
-       try{
+        $view = $request->view; //view is the way we show tasks , 0 for undone , 1 for done , 2 for both of them
+        if($view == 0){
+            $tasks = Task::where('done',0)->get();
+            return $tasks;
+        }elseif($view == 1){
+            $tasks = Task::where('done',1)->get();
+            return $tasks;
+        }
+        else{
             $tasks = Task::all();
-            return response()->json([
-                'data' => $tasks,
-                'message' => 'Response sent successfully'
-            ],200);
-        } catch(\Error $err) {
-            return response()->json([
-                'message' => $err->getMessage(),
-            ], $err->getCode());
+            return $tasks;
         }
     }
-    public static function store(StoretaskRequest $request)
+    public static function store(StoreTaskRequest $request)
     {
         try{
             $data = $request->validated();
@@ -46,7 +43,7 @@ trait TaskResponseHandler
         }
     }
 
-    public static function update(UpdatetaskRequest $request, Task $task)
+    public static function update(UpdateTaskRequest $request, Task $task)
     {
         try{
             $data = $request->validated();

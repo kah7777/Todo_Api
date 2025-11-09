@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexTaskRequest;
 use App\Models\task;
 use App\Http\Requests\StoretaskRequest;
 use App\Http\Requests\UpdatetaskRequest;
 use App\Traits\TaskResponseHandler;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -13,9 +15,9 @@ class TaskController extends Controller
     /**
      * Display a listing of all tasks.
      */
-    public function index()
+    public function index(IndexTaskRequest $request)
     {
-        $response = TaskResponseHandler::index();
+        $response = TaskResponseHandler::index($request);
         return $response;
     }
 
@@ -46,15 +48,4 @@ class TaskController extends Controller
         return $response;
     }
 
-        public function indexDone()
-    {
-        $response = TaskResponseHandler::indexDone();
-        return $response;
-    }
-
-            public function makeTaskDone()
-    {
-        $response = TaskResponseHandler::makeTaskDone();
-        return $response;
-    }
 }
