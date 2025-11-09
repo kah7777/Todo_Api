@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('descritpion')->nullable();
+            $table->string('description')->nullable();
             $table->date('dead_line')->nullable();
             $table->time('timer')->nullable();
-            $table->boolean('done')->default('false');
+            $table->boolean('done')->default(false);
             $table->timestamps();
         });
     }

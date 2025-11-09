@@ -11,7 +11,7 @@ use Illuminate\Http\Response;
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all tasks.
      */
     public function index()
     {
@@ -20,42 +20,41 @@ class TaskController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created task in storage.
      */
     public function store(StoretaskRequest $request)
     {
         $response = TaskResponseHandler::store($request);
         return $response;
+    }
 
+  /**
+     * Update the specified task in storage.
+     */
+    public function update(UpdatetaskRequest $request, Task $task)
+    {
+        $response = TaskResponseHandler::update($request,$task);
+        return $response;
     }
 
     /**
-     * Display the specified resource.
+     * Show the specified task in storage.
      */
     public function show(task $task)
     {
-        $response = TaskResponseHandler::index();
+        $response = TaskResponseHandler::show($task);
         return $response;
-
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatetaskRequest $request, task $task)
+        public function indexDone()
     {
-        $response = TaskResponseHandler::index();
+        $response = TaskResponseHandler::indexDone();
         return $response;
-
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function done(task $task)
+            public function makeTaskDone()
     {
-        $response = TaskResponseHandler::done($task);
+        $response = TaskResponseHandler::makeTaskDone();
         return $response;
     }
 }

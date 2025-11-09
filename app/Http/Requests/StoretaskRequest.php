@@ -23,8 +23,7 @@ class StoretaskRequest extends FormRequest
     {
         return [
             'title' => 'required | string | min:2 | max:25',
-            'descreption' => 'string | min:2 | max:300',
-            ''
+            'description' => 'string | min:2 | max:300',
 
         ];
     }
