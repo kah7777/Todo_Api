@@ -13,6 +13,7 @@ trait TaskResponseHandler
 {
     public static function index(IndexTaskRequest $request)
     {
+        if(!Task::all()){
         $view = $request->view; //view is the way we show tasks , 0 for undone , 1 for done , 2 for both of them
         if($view == 0){
             $tasks = Task::where('done',0)->get();
@@ -24,6 +25,10 @@ trait TaskResponseHandler
         else{
             $tasks = Task::all();
             return $tasks;
+        }}else{
+            return response()->json([
+                'message' => 'no task for today'
+            ]);
         }
     }
     public static function store(StoreTaskRequest $request)
