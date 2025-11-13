@@ -14,13 +14,14 @@ trait TaskResponseHandler
     //views is integer for the user to filter tasks, 0 for undone , 1 for done , 2 for both
     public static function index(IndexTaskRequest $request)
     {
-        $user = Auth::user();
         $request->validated();
+        $user = Auth::user();
         $view = $request->view;
         if ($view == 0) {
             $tasks = Task::where('user_id', $user->id)
                 ->where('done', 0)
                 ->get();
+            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
                 return response()->json([
                     'data' => $tasks,
@@ -35,6 +36,7 @@ trait TaskResponseHandler
             $tasks = Task::where('user_id', $user->id)
                 ->where('done', 1)
                 ->get();
+            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
                 return response()->json([
                     'data' => $tasks,
@@ -47,6 +49,7 @@ trait TaskResponseHandler
             }
         } else {
             $tasks = Task::where('user_id', $user->id)->get();
+            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
                 return response()->json([
                     'data' => $tasks,

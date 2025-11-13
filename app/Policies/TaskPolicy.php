@@ -12,7 +12,7 @@ class TaskPolicy
      */
     public function index(User $user, Task $task): bool
     {
-        return true;
+        return $user->id === $task->user_id;
     }
 
     /**
