@@ -7,8 +7,7 @@ use App\Models\task;
 use App\Http\Requests\StoretaskRequest;
 use App\Http\Requests\UpdatetaskRequest;
 use App\Traits\TaskResponseHandler;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 
 class TaskController extends Controller
 {
@@ -30,12 +29,12 @@ class TaskController extends Controller
         return $response;
     }
 
-  /**
+    /**
      * Update the specified task in storage.
      */
     public function update(UpdatetaskRequest $request, Task $task)
     {
-        $response = TaskResponseHandler::update($request,$task);
+        $response = TaskResponseHandler::update($request, $task);
         return $response;
     }
 
@@ -47,5 +46,4 @@ class TaskController extends Controller
         $response = TaskResponseHandler::show($task);
         return $response;
     }
-
 }

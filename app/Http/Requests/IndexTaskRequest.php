@@ -22,7 +22,7 @@ class IndexTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'view' =>'required|between:0,2'
+            'view' => 'required | integer | between:0,2'
         ];
     }
 }

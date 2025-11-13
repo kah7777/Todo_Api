@@ -30,6 +30,7 @@ class AuthController extends Controller
         if($user = User::where('email',$request->email)->first()){
             if(Hash::check($request->password, $user->password)){
                 $apiToken = $user->createToken('apiToken')->plainTextToken;
+                Auth::login($user);
                 return response()->json([
                     'Api token' => $apiToken,
                     'message' => 'Welcome , login was done Successfully',
@@ -42,6 +43,22 @@ class AuthController extends Controller
         }else {
             return response()->json([
                 'message' => 'email doesnt exist',
+            ]);
+        }
+    }
+
+    public function logout (User $user)
+    {
+        try{
+            $id = $user->id;
+             $user->tokens()->where('id', $id)->delete();
+            return response()->json([
+                'message'=> "You've logged out successfully"
+            ]);
+        }catch(\Error $err){
+            return response()->json([
+                'message' => 'Bruh !!',
+                'err' => $err->getMessage(),
             ]);
         }
     }
