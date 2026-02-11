@@ -13,13 +13,14 @@ class AuthController extends Controller
 {
     public function registerIfNotExisted(RegisterRequest $request)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             $signUpData = $request->validated();
             $user = User::create($signUpData);
             $apiToken = $user->createToken('apiToken')->plainTextToken;
+
             return response()->json([
                 'Api token' => $apiToken,
-                'message' => 'Registered successfully'
+                'message' => 'Registered successfully',
             ], 200);
         }
     }
@@ -31,6 +32,7 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $apiToken = $user->createToken('apiToken')->plainTextToken;
                 Auth::login($user);
+
                 return response()->json([
                     'Api token' => $apiToken,
                     'message' => 'Welcome , login was done Successfully',
@@ -52,8 +54,9 @@ class AuthController extends Controller
         try {
 
             $request->user()->tokens()->delete();
+
             return response()->json([
-                'message' => "You've logged out successfully"
+                'message' => "You've logged out successfully",
             ]);
         } catch (\Error $err) {
             return response()->json([

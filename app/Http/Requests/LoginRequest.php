@@ -27,10 +27,11 @@ class LoginRequest extends FormRequest
         ];
     }
 
-        public function messages(){
+    public function messages()
+    {
         return [
-        'emial should be valid and exits',
-        'password should be between 6 and 20 digits'
+            'emial should be valid and exits',
+            'password should be between 6 and 20 digits',
         ];
-}
+    }
 }

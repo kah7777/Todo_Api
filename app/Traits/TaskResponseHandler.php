@@ -21,36 +21,36 @@ trait TaskResponseHandler
             $tasks = Task::where('user_id', $user->id)
                 ->where('done', 0)
                 ->get();
-            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
+                Gate::authorize('index', $tasks->first());
                 return response()->json([
                     'data' => $tasks,
                     'message' => 'Response sent successfully',
                 ]);
-            } else {
+            } elseif ($tasks->isEmpty()) {
                 return response()->json([
-                    'message' => 'No undone tasks for today'
+                    'message' => 'No tasks for today'
                 ]);
             }
         } elseif ($view == 1) {
             $tasks = Task::where('user_id', $user->id)
                 ->where('done', 1)
                 ->get();
-            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
+                Gate::authorize('index', $tasks->first());
                 return response()->json([
                     'data' => $tasks,
                     'message' => 'Response sent successfully',
                 ]);
             } else {
                 return response()->json([
-                    'message' => 'No done tasks for today',
+                    'message' => 'Your done tasks list is empty',
                 ]);
             }
-        } else {
+        } elseif ($view = 2) {
             $tasks = Task::where('user_id', $user->id)->get();
-            Gate::authorize('index', $tasks->first());
             if ($tasks->first()) {
+                Gate::authorize('index', $tasks->first());
                 return response()->json([
                     'data' => $tasks,
                     'message' => 'Response sent successfully',

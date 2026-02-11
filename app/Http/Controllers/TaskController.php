@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\IndexTaskRequest;
-use App\Models\task;
 use App\Http\Requests\StoretaskRequest;
 use App\Http\Requests\UpdatetaskRequest;
+use App\Models\task;
 use App\Traits\TaskResponseHandler;
-
 
 class TaskController extends Controller
 {
@@ -17,6 +16,7 @@ class TaskController extends Controller
     public function index(IndexTaskRequest $request)
     {
         $response = TaskResponseHandler::index($request);
+
         return $response;
     }
 
@@ -26,6 +26,7 @@ class TaskController extends Controller
     public function store(StoretaskRequest $request)
     {
         $response = TaskResponseHandler::store($request);
+
         return $response;
     }
 
@@ -35,6 +36,7 @@ class TaskController extends Controller
     public function update(UpdatetaskRequest $request, Task $task)
     {
         $response = TaskResponseHandler::update($request, $task);
+
         return $response;
     }
 
@@ -44,6 +46,7 @@ class TaskController extends Controller
     public function show(task $task)
     {
         $response = TaskResponseHandler::show($task);
+
         return $response;
     }
 }

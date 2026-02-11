@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MakeTaskDoneRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MakeTaskDoneController extends Controller
 {
@@ -13,18 +13,26 @@ class MakeTaskDoneController extends Controller
      */
     public function __invoke(MakeTaskDoneRequest $request, Task $task)
     {
-        try {
-            $request->validated();
-            $task->done = true;
-            $task->save();
+        $user = Auth::user();
+        if ($task->user->id == $user->id) {
+            try {
+                $request->validated();
+                $task->done = true;
+                $task->save();
+
+                return response()->json([
+                    'data' => 'Task is done',
+                    'message' => 'Response sent successfully',
+                ]);
+            } catch (\Error $err) {
+                return response()->json([
+                    'message' => $err->getMessage(),
+                ], $err->getCode());
+            }
+        } else {
             return response()->json([
-                'data' => $task,
-                'message' => 'Response sent successfully',
+                'message' => 'You are not allowed to edit this task',
             ]);
-        } catch (\Error $err) {
-            return response()->json([
-                'message' => $err->getMessage(),
-            ], $err->getCode());
         }
     }
 }

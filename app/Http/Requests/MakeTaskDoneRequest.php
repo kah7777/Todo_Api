@@ -22,7 +22,7 @@ class MakeTaskDoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'done' => 'required | boolean | accepted:1'
+            'done' => 'required | boolean | accepted:1,true ',
         ];
     }
 }

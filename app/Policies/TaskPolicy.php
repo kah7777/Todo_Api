@@ -28,7 +28,7 @@ class TaskPolicy
      */
     public function store(User $user): bool
     {
-        return  true;
+        return true;
     }
 
     /**
