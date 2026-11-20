@@ -10,9 +10,9 @@ class TaskPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function index(User $user, Task $task): bool
+    public function index(User $user): bool
     {
-        return $user->id === $task->user_id;
+        return true;
     }
 
     /**
@@ -35,6 +35,11 @@ class TaskPolicy
      * Determine whether the user can update the model.
      */
     public function update(User $user, Task $task): bool
+    {
+        return $user->id === $task->user_id;
+    }
+
+    public function delete(User $user, Task $task): bool
     {
         return $user->id === $task->user_id;
     }

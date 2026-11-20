@@ -10,9 +10,8 @@ use App\Http\Controllers\TopUsersWithMostDoneTasksController;
 use App\Http\Controllers\UploadProfilePictureController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('/tasks', TaskController::class)->except('destroy')->middleware('auth:sanctum');
+Route::apiResource('/tasks', TaskController::class)->middleware('auth:sanctum');
 Route::put('/task/{task}/make-task-done', MakeTaskDoneController::class)->middleware('auth:sanctum');
-Route::apiResource('/tasks/notifications', TaskController::class)->middleware('auth:sanctum');
 Route::post('/register', [AuthController::class, 'registerIfNotExisted']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
