@@ -13,6 +13,7 @@ class RetrieveProfilePictureController extends Controller
     public function __invoke()
     {
         $user = Auth::user();
+
         return $user->getFirstMediaUrl('profile-picture');
     }
 }

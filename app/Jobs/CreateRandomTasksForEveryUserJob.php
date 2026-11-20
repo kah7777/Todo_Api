@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 class CreateRandomTasksForEveryUserJob implements ShouldQueue
 {
     use Queueable;
+
     /**
      * Create a new job instance.
      */
@@ -19,7 +20,7 @@ class CreateRandomTasksForEveryUserJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $seeder = new DatabaseSeeder();
+        $seeder = new DatabaseSeeder;
         $seeder->run();
     }
 }

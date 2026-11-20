@@ -2,42 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Support\Facades\Gate;
 
-class TaskController extends Controller {
-    //views is integer for the user to filter tasks, 0 for undone , 1 for done , 2 for both
+class TaskController extends Controller
+{
+    // views is integer for the user to filter tasks, 0 for undone , 1 for done , 2 for both
     public function index(IndexTaskRequest $request)
     {
-        Gate::authorize('index',Task::Class);
+        Gate::authorize('index', Task::class);
         $view = (int) $request->validated('view');
         $user = $request->user();
         $tasks = $user->tasks()
-        ->when($view === 0, fn ($query) => $query->where('done', false))
-        ->when($view === 1, fn ($query) => $query->where('done', true))
-        ->get();
+            ->when($view === 0, fn ($query) => $query->where('done', false))
+            ->when($view === 1, fn ($query) => $query->where('done', true))
+            ->get();
         $message = match (true) {
-        $tasks->isNotEmpty() => 'Response sent successfully',
-        $view === 0 => 'No tasks for today',
-        $view === 1 => 'Your done tasks list is empty',
-        default => 'No tasks listed',
-    };
+            $tasks->isNotEmpty() => 'Response sent successfully',
+            $view === 0 => 'No tasks for today',
+            $view === 1 => 'Your done tasks list is empty',
+            default => 'No tasks listed',
+        };
+
         return response()->json([
             'data' => $tasks,
-            'messeges' => $message,
+            'message' => $message,
         ]);
     }
 
     public function store(StoreTaskRequest $request)
     {
-        Gate::authorize('store',Task::Class);
-        $data['user_id'] = $request->user();
-        $data = $request->validated();
-        $task = Task::create($data);
+        Gate::authorize('store', Task::class);
+        $task = $request->user()->tasks()->create($request->validated());
         return response()->json([
             'data' => $task,
             'message' => 'Response sent successfully']);
@@ -46,41 +45,30 @@ class TaskController extends Controller {
     public function update(UpdateTaskRequest $request, Task $task)
     {
         Gate::authorize('update', $task);
-        try {
-            $data = $request->validated();
-            $task->update($data);
-            return response()->json([
-                'data' => $task,
-                'message' => 'Task updated successfully',
-            ]);
-        } catch (\Error $err) {
-            return response()->json([
-                'message' => $err->getMessage(),
+        $data = $request->validated();
+        $task->update($data);
 
-            ], $err->getCode(),);
-        }
+        return response()->json([
+            'data' => $task,
+            'message' => 'Task updated successfully',
+        ]);
     }
 
     public function show(Task $task)
     {
         Gate::authorize('show', $task);
-        try {
-            $task = Task::findOrFail($task->id);
-            return response()->json([
-                'data' => $task,
-                'message' => 'Response sent successfully',
-            ]);
-        } catch (\Error $err) {
-            return response()->json([
-                'message' => $err->getMessage(),
-            ], $err->getCode());
-        }
+        $task = Task::find($task->id);
+
+        return response()->json([
+            'data' => $task,
+            'message' => 'Response sent successfully',
+        ]);
     }
 
-    public function destroy(Task $task){
-        Gate::authorize('delete',$task);
+    public function destroy(Task $task)
+    {
+        Gate::authorize('delete', $task);
         $task->delete();
         return response()->noContent();
     }
-
 }

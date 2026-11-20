@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Messages\MailMessage;

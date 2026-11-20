@@ -5,7 +5,6 @@ use App\Models\User;
 use App\Notifications\TasksWithEndedDeadlinesNotification;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
@@ -18,9 +17,11 @@ Schedule::call(
             ->where('done', 0)
             ->get();
 
-        if ($tasks->isEmpty()) return;
+        if ($tasks->isEmpty()) {
+            return;
+        }
 
-        $user = User::find($tasks->first()->id);
+        $user = User::find('user_id');
         $user->notify(new TasksWithEndedDeadlinesNotification($tasks));
     }
 

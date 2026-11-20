@@ -9,7 +9,9 @@ use Spatie\Image\Image;
 class ResizeProfilePictureJob implements ShouldQueue
 {
     use Queueable;
+
     protected $image;
+
     /**
      * Create a new job instance.
      */

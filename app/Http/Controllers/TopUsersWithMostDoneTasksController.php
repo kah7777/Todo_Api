@@ -14,7 +14,7 @@ class TopUsersWithMostDoneTasksController extends Controller
     public function __invoke()
     {
         return Cache::remember('topUsersWithMostDoneTasksCache', 600, function () {
-            return $users =  User::withCount(['tasks' => fn($query) => $query->where('done', 1)])
+            return $users = User::withCount(['tasks' => fn ($query) => $query->where('done', 1)])
                 ->orderByDesc('tasks_count')
                 ->get()
                 ->map(function ($users) {
