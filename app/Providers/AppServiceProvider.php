@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\TaskController;
 use App\Policies\TaskPolicy;
-use App\Traits\TaskResponseHandler;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        TaskResponseHandler::class => TaskPolicy::class,
+        TaskController::class => TaskPolicy::class,
     ];
 
     /**
