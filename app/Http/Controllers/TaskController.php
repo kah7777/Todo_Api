@@ -18,7 +18,7 @@ class TaskController extends Controller
         $tasks = $user->tasks()
             ->when($view === 0, fn ($query) => $query->where('done', false))
             ->when($view === 1, fn ($query) => $query->where('done', true))
-            ->get()->pagination();
+            ->get();
         $message = match (true) {
             $tasks->isNotEmpty() => 'Response sent successfully',
             $view === 0 => 'No tasks for today',

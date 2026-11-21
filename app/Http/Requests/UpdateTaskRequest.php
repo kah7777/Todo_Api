@@ -26,6 +26,7 @@ class UpdateTaskRequest extends FormRequest
             'title' => 'string|min:3|max:30',
             'description' => 'string|min:3|max:300',
             'done' => 'boolean',
+            'dead_line' => 'date_format:Y-m-d H:i:s',
         ];
     }
 }
