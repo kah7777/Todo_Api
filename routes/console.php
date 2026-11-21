@@ -21,7 +21,7 @@ Schedule::call(
             return;
         }
         $tasks->groupBy('user_id')->each(function ($userTasks) {
-            $userTasks->user->notify(new TasksWithEndedDeadlinesNotification($userTasks));
+            $userTasks->first()->user->notify(new TasksWithEndedDeadlinesNotification($userTasks));
         });
 
         Task::whereIn('id', $tasks->pluck('id'))->update(['notified_at' => now()]);

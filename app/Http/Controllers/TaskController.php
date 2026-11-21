@@ -57,7 +57,6 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         Gate::authorize('show', $task);
-        $task = Task::find($task);
 
         return response()->json([
             'data' => $task,
