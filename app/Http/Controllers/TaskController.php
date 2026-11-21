@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
-    // views is integer for the user to filter tasks, 0 for undone , 1 for done , 2 for both
     public function index(IndexTaskRequest $request)
     {
         Gate::authorize('index', Task::class);
@@ -19,7 +18,7 @@ class TaskController extends Controller
         $tasks = $user->tasks()
             ->when($view === 0, fn ($query) => $query->where('done', false))
             ->when($view === 1, fn ($query) => $query->where('done', true))
-            ->get();
+            ->get()->pagination();
         $message = match (true) {
             $tasks->isNotEmpty() => 'Response sent successfully',
             $view === 0 => 'No tasks for today',
@@ -37,6 +36,7 @@ class TaskController extends Controller
     {
         Gate::authorize('store', Task::class);
         $task = $request->user()->tasks()->create($request->validated());
+
         return response()->json([
             'data' => $task,
             'message' => 'Response sent successfully']);
@@ -57,7 +57,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         Gate::authorize('show', $task);
-        $task = Task::find($task->id);
+        $task = Task::find($task);
 
         return response()->json([
             'data' => $task,
@@ -69,6 +69,7 @@ class TaskController extends Controller
     {
         Gate::authorize('delete', $task);
         $task->delete();
+
         return response()->noContent();
     }
 }

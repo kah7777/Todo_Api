@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Task;
-use App\Models\User;
 use App\Notifications\TasksWithEndedDeadlinesNotification;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -15,14 +14,17 @@ Schedule::call(
     function () {
         $tasks = Task::where('dead_line', '<=', now())
             ->where('done', 0)
+            ->whereNull('notified_at')
+            ->with('user')
             ->get();
-
         if ($tasks->isEmpty()) {
             return;
         }
+        $tasks->groupBy('user_id')->each(function ($userTasks) {
+            $userTasks->user->notify(new TasksWithEndedDeadlinesNotification($userTasks));
+        });
 
-        $user = User::find('user_id');
-        $user->notify(new TasksWithEndedDeadlinesNotification($tasks));
+        Task::whereIn('id', $tasks->pluck('id'))->update(['notified_at' => now()]);
     }
 
 )->everyMinute();
