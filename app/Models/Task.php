@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    protected function casts(): array
+    {
+        return [
+            'dead_line' => 'datetime',
+            'notified_at' => 'datetime',
+            'done' => 'boolean',
+
+        ];
+    }
+
     /** @use HasFactory<TaskFactory> */
     use HasFactory;
 
