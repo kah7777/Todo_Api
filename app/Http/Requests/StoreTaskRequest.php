@@ -25,7 +25,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required | string | min:2 | max:25',
             'description' => 'string | min:2 | max:300',
-            'dead_line' => 'date',
+            'dead_line' => 'datetime',
 
         ];
     }

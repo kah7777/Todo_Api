@@ -39,7 +39,7 @@ class TaskController extends Controller
 
         return response()->json([
             'data' => $task,
-            'message' => 'Response sent successfully']);
+            'message' => 'Response sent successfully'], 201);
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
